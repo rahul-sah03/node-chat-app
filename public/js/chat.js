@@ -17,12 +17,35 @@ function scrolltoBottom()
     }
 }
 socket.on('connect',function(){
+    var params=jQuery.deparam(window.location.search);
+    socket.emit('join',params,function(err){
+        
+        if(err)
+        {
+            window.location.href='/';
+            alert(err);
+            
+        }
+        else{
+            console.log('No Error');
+        }
+    });
     console.log('Connected to server');
+    socket.on('updateUserList',function(users){
+        var ol=jQuery('<ol></ol>');
+        users.forEach(function(user){
+            ol.append(jQuery('<li></li>').text(user));
+        });
+        
+        jQuery('#users').html(ol);
+    });
     
 });
 socket.on('disconnect',function(){
     console.log('Disconnected from server');
 });
+
+
 
 jQuery('#message-form').on('submit',function(e){
 
@@ -81,5 +104,5 @@ locationButton.on('click',function()
     },function(){
         locationButton.removeAttr('disabled').text('Send location');
         alert('Unable to fetch location.');
-    });
+    }); 
 })
