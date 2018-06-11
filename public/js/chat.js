@@ -29,7 +29,7 @@ socket.on('connect',function(){
         else{
             console.log('No Error');
         }
-    });
+    }); 
     console.log('Connected to server');
     socket.on('updateUserList',function(users){
         var ol=jQuery('<ol></ol>');
@@ -45,13 +45,11 @@ socket.on('disconnect',function(){
     console.log('Disconnected from server');
 });
 
-
-
 jQuery('#message-form').on('submit',function(e){
 
     e.preventDefault();
     socket.emit('createMessage',{
-        from:'User',
+        
         text:jQuery('[name=message]').val()
     },function(){
         jQuery('[name=message]').val('');
